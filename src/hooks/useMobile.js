@@ -6,7 +6,14 @@ const getResolution = () => {
   }
 };
 
+const getTypePhone = () => {
+  const phone = window.navigator.userAgent;
+  return phone;
+};
+
 export const useMobile = () => {
   const isMobile = getResolution();
-  return { isMobile };
+  const typeMobile = getTypePhone();
+  const isIphone = getTypePhone().includes("iPhone");
+  return { isMobile, typeMobile, isIphone };
 };
