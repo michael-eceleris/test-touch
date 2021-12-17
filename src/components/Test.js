@@ -32,15 +32,15 @@ const Test = () => {
       );
       setSquareHeight(
         Math.trunc(
-          (window.screen.availHeight - window.screen.availHeight * 0.1727) / 70
+          (window.screen.availHeight - window.screen.availHeight * 0.1727) / 30
         )
       );
     } else {
-      setSquareHeight(Math.trunc(window.screen.availHeight / 70));
+      setSquareHeight(Math.trunc(window.screen.availHeight / 30));
       setHeightDevide(window.screen.availHeight);
     }
     setWidthDevice(window.screen.availWidth);
-    setSquareWidth(Math.trunc(window.screen.availWidth / 70));
+    setSquareWidth(Math.trunc(window.screen.availWidth / 30));
     measureSquare();
     setNumbersArray();
     //eslint-disable-next-line
