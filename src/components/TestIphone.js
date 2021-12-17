@@ -5,10 +5,7 @@ import Modal from "./Modal";
 
 const TestIphone = ({
   numbersBySquare,
-  handle,
   options,
-  setShowModal,
-  showModal,
   showTest,
   heightSquare,
   handleTap,
@@ -21,7 +18,7 @@ const TestIphone = ({
           showTest ? " fixed z-10 bg-white" : ""
         }  w-screen h-screen top-0 right-0 `}
       >
-        {showModal && <Modal setShowModal={setShowModal} handle={handle} />}
+        <Modal />
         <div className={`flex flex-wrap ${showTest ? "" : "hidden"} `}>
           {numbersBySquare &&
             numbersBySquare.map((d) => (
