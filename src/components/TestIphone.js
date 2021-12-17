@@ -1,6 +1,7 @@
 import React from "react";
 import Hammer from "react-hammerjs";
 import { Fragment } from "react";
+
 import Modal from "./Modal";
 
 const TestIphone = ({
@@ -21,9 +22,8 @@ const TestIphone = ({
           showTest ? " fixed z-10 bg-white" : ""
         }  w-screen h-screen top-0 right-0 `}
       >
-        {showModal && <Modal setShowModal={setShowModal} handle={handle} />}
+        <Modal />
         <div className={`flex flex-wrap ${showTest ? "" : "hidden"} `}>
-          <p> {showModal} </p>
           {numbersBySquare &&
             numbersBySquare.map((d) => (
               <Hammer options={options} onPan={handleTap} onTap={handleTap}>

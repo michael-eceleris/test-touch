@@ -8,8 +8,6 @@ const TestAndroid = ({
   numbersBySquare,
   handle,
   options,
-  setShowModal,
-  showModal,
   showTest,
   heightSquare,
   handleTap,
@@ -17,7 +15,7 @@ const TestAndroid = ({
 }) => {
   return (
     <FullScreen handle={handle}>
-      {showModal && <Modal setShowModal={setShowModal} handle={handle} />}
+      <Modal />
       <div className={`flex flex-wrap ${showTest ? "" : "hidden"} `}>
         {numbersBySquare &&
           numbersBySquare.map((d) => (

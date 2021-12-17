@@ -6,6 +6,8 @@ import { useFullScreenHandle } from "react-full-screen";
 import { useMobile } from "../hooks/useMobile";
 import TestIphone from "./TestIphone";
 import TestAndroid from "./TestAndroid";
+import { useSquares } from "../provider/squareProvider";
+import { useModal } from "../provider/modalProvider";
 
 const Test = () => {
   const handle = useFullScreenHandle();
@@ -13,21 +15,32 @@ const Test = () => {
   const [heightDevice, setHeightDevide] = useState(0);
   const [heightSquare, setHeightSquare] = useState(0);
   const [numbersBySquare, setNumbersBySquare] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const { isIphone } = useMobile();
-  const numberSquareInWidth = 6;
-  const numberSquareInHeigth = 8;
+  const {
+    squareHeight: numberSquareInHeigth,
+    squareWidth: numberSquareInWidth,
+    setSquareHeight,
+    setSquareWidth,
+  } = useSquares();
+  const { openModal } = useModal();
   let selectSquares = [];
   useEffect(() => {
     if (isIphone) {
       setHeightDevide(
         window.screen.availHeight - window.screen.availHeight * 0.1727
       );
+      setSquareHeight(
+        Math.trunc(
+          (window.screen.availHeight - window.screen.availHeight * 0.1727) / 70
+        )
+      );
     } else {
+      setSquareHeight(Math.trunc(window.screen.availHeight / 70));
       setHeightDevide(window.screen.availHeight);
     }
     setWidthDevice(window.screen.availWidth);
+    setSquareWidth(Math.trunc(window.screen.availWidth / 70));
     measureSquare();
     setNumbersArray();
     //eslint-disable-next-line
@@ -81,7 +94,7 @@ const Test = () => {
       return 0;
     });
     if (JSON.stringify(numbersBySquare) === JSON.stringify(result)) {
-      setShowModal(true);
+      openModal();
     }
   };
 
@@ -104,7 +117,6 @@ const Test = () => {
       </button>
       {isIphone ? (
         <TestIphone
-          setShowModal={setShowModal}
           showTest={showTest}
           numbersBySquare={numbersBySquare}
           handle={handle}
@@ -112,11 +124,9 @@ const Test = () => {
           numberSquareInWidth={numberSquareInWidth}
           heightSquare={heightSquare}
           options={options}
-          showModal={showModal}
         />
       ) : (
         <TestAndroid
-          setShowModal={setShowModal}
           showTest={showTest}
           numbersBySquare={numbersBySquare}
           handle={handle}
@@ -124,7 +134,6 @@ const Test = () => {
           numberSquareInWidth={numberSquareInWidth}
           heightSquare={heightSquare}
           options={options}
-          showModal={showModal}
         />
       )}
     </div>
