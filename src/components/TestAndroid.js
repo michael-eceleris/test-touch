@@ -18,8 +18,13 @@ const TestAndroid = ({
       <Modal />
       <div className={`flex flex-wrap ${showTest ? "" : "hidden"} `}>
         {numbersBySquare &&
-          numbersBySquare.map((d) => (
-            <Hammer options={options} onPan={handleTap} onTap={handleTap}>
+          numbersBySquare.map((d, index) => (
+            <Hammer
+              options={options}
+              key={`hammer_index_${index}`}
+              onPan={handleTap}
+              onTap={handleTap}
+            >
               <div
                 key={`square_${d}`}
                 id={`square_${d}`}

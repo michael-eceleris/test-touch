@@ -1,11 +1,24 @@
 import React from "react";
 import { When } from "react-if";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { useModal } from "../provider/modalProvider";
+import { usePostSendCode } from "../services/sendCode/useSendCode";
 
 const Modal = () => {
   const { showModal, closeModal } = useModal();
+  const { idTouch } = useParams();
+  const { mutateAsync: postCode, isLoading } = usePostSendCode();
+  const sendCode = () => {
+    postCode({
+      test: true,
+      token: idTouch,
+    }).then((res) => {
+      console.log("res", res);
+    });
+    closeModal();
+  };
   return (
     <When condition={showModal}>
       <div
@@ -42,9 +55,9 @@ const Modal = () => {
                     aria-hidden='true'
                   >
                     <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
                       d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
                     />
                   </svg>
@@ -69,8 +82,9 @@ const Modal = () => {
               <Link
                 type='button'
                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm'
-                to='/test/ok'
-                onClick={closeModal}
+                to='/test-accept'
+                onClick={sendCode}
+                disabled={isLoading}
               >
                 Siguiente
               </Link>

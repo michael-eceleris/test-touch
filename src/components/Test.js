@@ -25,6 +25,8 @@ const Test = () => {
   } = useSquares();
   const { openModal } = useModal();
   let selectSquares = [];
+  /* const numberSquareInHeigth = 6;
+  const numberSquareInWidth = 4; */
   useEffect(() => {
     if (isIphone) {
       setHeightDevide(
