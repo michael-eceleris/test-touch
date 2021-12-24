@@ -1,10 +1,10 @@
 import React from "react";
 import { IoMdAlert } from "react-icons/all";
 
-const ModalExpireTime = () => {
+const ModalIncompatible = () => {
   return (
     <div
-      className='fixed z-50 overflow-y-auto'
+      className='fixed z-50 overflow-y-auto w-screen'
       aria-labelledby='modal-title'
       role='dialog'
       aria-modal='true'
@@ -42,12 +42,12 @@ const ModalExpireTime = () => {
                   className='text-lg leading-6 font-medium text-gray-900'
                   id='modal-title'
                 >
-                  El tiempo expiro
+                  Dispositivo Incompatible
                 </h3>
                 <div className='mt-2'>
                   <p className='text-sm text-gray-500'>
-                    Lo sentimos, el tiempo para realizar la prueba termino, por
-                    favor comunicate con atencion al cliente para ayudarte.
+                    Lo sentimos, este dispositivo es incompatible con esta
+                    prueba
                   </p>
                 </div>
               </div>
@@ -59,4 +59,4 @@ const ModalExpireTime = () => {
   );
 };
 
-export default ModalExpireTime;
+export default ModalIncompatible;

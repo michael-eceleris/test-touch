@@ -1,12 +1,49 @@
 import React from "react";
-const TestOk = () => {
+import Hammer from "react-hammerjs";
+import { Fragment } from "react";
+import Modal from "./Modal";
+
+const TestOk = ({
+  numbersBySquare,
+  options,
+  showTest,
+  heightSquare,
+  handleTap,
+  numberSquareInWidth,
+}) => {
   return (
-    <div className='h-screen w-full justify-center flex items-center '>
-      <h1 className='text-center mt-72 mb-96 font-semibold'>
-        Felicidades, pasaste la prueba, continua con tu proceso de compra de la
-        poliza.
-      </h1>
-    </div>
+    <Fragment>
+      <div
+        className={` ${
+          showTest ? " fixed z-10 bg-white" : ""
+        }  w-screen h-screen top-0 right-0 `}
+      >
+        <Modal />
+        <div className={`flex flex-wrap ${showTest ? "" : "hidden"} `}>
+          {numbersBySquare &&
+            numbersBySquare.map((d, index) => (
+              <Hammer
+                options={options}
+                key={`hammer_index_${index}`}
+                onPan={handleTap}
+                onTap={handleTap}
+              >
+                <div
+                  key={`square_${d}`}
+                  id={`square_${d}`}
+                  data-index={d}
+                  className='mx-auto bg-blue-500  border-indigo-50'
+                  style={{
+                    width: `calc( ${100 / numberSquareInWidth}% - 1px)`,
+                    borderWidth: "0.5px",
+                    height: heightSquare,
+                  }}
+                ></div>
+              </Hammer>
+            ))}
+        </div>
+      </div>
+    </Fragment>
   );
 };
 

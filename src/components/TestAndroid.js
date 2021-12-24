@@ -29,7 +29,7 @@ const TestAndroid = ({
                 key={`square_${d}`}
                 id={`square_${d}`}
                 data-index={d}
-                className='mx-auto bg-blue-500  border-indigo-50'
+                className='mx-auto bg-red-500  border-indigo-50'
                 style={{
                   width: `calc( ${100 / numberSquareInWidth}% - 1px)`,
                   borderWidth: "0.5px",

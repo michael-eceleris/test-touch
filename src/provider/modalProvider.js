@@ -6,7 +6,9 @@ const ModalContext = createContext();
 
 export const ModalProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
-
+  const [showModalStart, setShowModalStart] = useState(true);
+  const [showModalTestOk, setShowModalTestOk] = useState(false);
+  const [showModalIncompatible, setShowModalIncompatible] = useState(false);
   const closeModal = () => {
     setShowModal(false);
   };
@@ -14,12 +16,46 @@ export const ModalProvider = ({ children }) => {
   const openModal = () => {
     setShowModal(true);
   };
+
+  const closeModalStart = () => {
+    setShowModalStart(false);
+  };
+
+  const openModalStart = () => {
+    setShowModalStart(true);
+  };
+
+  const closeModalTestOk = () => {
+    setShowModalTestOk(false);
+  };
+
+  const openModalTestOk = () => {
+    setShowModalTestOk(true);
+  };
+
+  const closeModalIncompatible = () => {
+    setShowModalIncompatible(false);
+  };
+
+  const openModalIncompatible = () => {
+    setShowModalIncompatible(true);
+  };
+
   return (
     <ModalContext.Provider
       value={{
         showModal,
         closeModal,
         openModal,
+        showModalStart,
+        closeModalStart,
+        openModalStart,
+        showModalTestOk,
+        closeModalTestOk,
+        openModalTestOk,
+        showModalIncompatible,
+        openModalIncompatible,
+        closeModalIncompatible,
       }}
       children={children}
     />

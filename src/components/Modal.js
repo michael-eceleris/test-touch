@@ -1,13 +1,12 @@
 import React from "react";
 import { When } from "react-if";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 import { useModal } from "../provider/modalProvider";
 import { usePostSendCode } from "../services/sendCode/useSendCode";
 
 const Modal = () => {
-  const { showModal, closeModal } = useModal();
+  const { showModal, closeModal, openModalTestOk } = useModal();
   const { idTouch } = useParams();
   const { mutateAsync: postCode, isLoading } = usePostSendCode();
   const sendCode = () => {
@@ -18,6 +17,7 @@ const Modal = () => {
       console.log("res", res);
     });
     closeModal();
+    openModalTestOk();
   };
   return (
     <When condition={showModal}>
@@ -79,15 +79,14 @@ const Modal = () => {
               </div>
             </div>
             <div className='bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'>
-              <Link
+              <button
                 type='button'
                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm'
-                to='/test-accept'
                 onClick={sendCode}
                 disabled={isLoading}
               >
                 Siguiente
-              </Link>
+              </button>
             </div>
           </div>
         </div>

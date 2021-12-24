@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useFullScreenHandle } from "react-full-screen";
 import { useParams } from "react-router-dom";
 import Countdown from "react-countdown";
+import { When } from "react-if";
+import { Unless } from "react-if";
 
 import { useMobile } from "../hooks/useMobile";
 import TestIphone from "./TestIphone";
@@ -11,6 +13,10 @@ import TestAndroid from "./TestAndroid";
 import { useSquares } from "../provider/squareProvider";
 import { useModal } from "../provider/modalProvider";
 import ModalExpireTime from "./ModalTimeExpire";
+import ModalStart from "./ModalStart";
+import ModalTestOk from "./ModalTestOk";
+import TestOk from "./TestOk";
+import ModalIncompatible from "./ModalIncompatible";
 
 const Test = () => {
   const handle = useFullScreenHandle();
@@ -18,19 +24,20 @@ const Test = () => {
   const [heightDevice, setHeightDevide] = useState(0);
   const [heightSquare, setHeightSquare] = useState(0);
   const [numbersBySquare, setNumbersBySquare] = useState(null);
+  const [modalExpire, setModalExpire] = useState(false);
   const [showTest, setShowTest] = useState(false);
-  const { isIphone } = useMobile();
+  const { isIphone, isMobile } = useMobile();
   const {
-    /* squareHeight: numberSquareInHeigth,
-    squareWidth: numberSquareInWidth, */
+    squareHeight: numberSquareInHeigth,
+    squareWidth: numberSquareInWidth,
     setSquareHeight,
     setSquareWidth,
   } = useSquares();
-  const { openModal } = useModal();
+  const { openModal, showModalStart, showModalTestOk } = useModal();
   const { timestap } = useParams();
   let selectSquares = [];
-  const numberSquareInHeigth = 6;
-  const numberSquareInWidth = 4;
+  /* const numberSquareInHeigth = 6;
+  const numberSquareInWidth = 4; */
   useEffect(() => {
     if (isIphone) {
       setHeightDevide(
@@ -85,7 +92,7 @@ const Test = () => {
     let percentageY = Math.floor(y / (heightDevice / numberSquareInHeigth));
     i = percentageX + numberSquareInWidth * percentageY;
     document.getElementById(`square_${numbersBySquare[i]}`).style.background =
-      "red";
+      "blue";
     selectSquares.push(numbersBySquare[i]);
     let result = selectSquares.filter((item, index) => {
       return selectSquares.indexOf(item) === index;
@@ -110,38 +117,19 @@ const Test = () => {
   };
 
   return (
-    <div className='flex justify-center items-center flex-col'>
-      <div className='h-screen w-full justify-center flex items-center flex-col pb-20'>
-        <p className='text-center my-1 font-semibold'>
-          A continuacion, se realizara una prueba de la pantalla con el fin de
-          continuar con el proceso de adquisicion de poliza.
-        </p>
-        <p className='text-center my-1 font-semibold'>
-          Esta prueba se basa en seleccionar lo cuadros generados para validar
-          el touch de la pantalla.
-        </p>
-        <a
-          href='https://files-statics-protegeme.s3.amazonaws.com/Politica+deprotecciondedatos-min.pdf'
-          className='underline underline-offset-4 text-blue-800 my-3 font-semibold '
-        >
-          Terminos y Condiciones
-        </a>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          onClick={handleScreenFull}
-        >
-          Comenzar prueba
-        </button>
-      </div>
+    <div className='flex justify-center items-center flex-col h-screen'>
       <Countdown
         date={timestap}
         intervalDelay={0}
         precision={3}
-        renderer={(props) => props.completed === true && <ModalExpireTime />}
+        renderer={(props) => {
+          setModalExpire(props.completed);
+        }}
       />
-      {isIphone ? (
+      <When condition={modalExpire}>
+        <ModalExpireTime />
         <TestIphone
-          showTest={showTest}
+          showTest={modalExpire}
           numbersBySquare={numbersBySquare}
           handle={handle}
           handleTap={handleTap}
@@ -149,9 +137,11 @@ const Test = () => {
           heightSquare={heightSquare}
           options={options}
         />
-      ) : (
-        <TestAndroid
-          showTest={showTest}
+      </When>
+      <When condition={showModalStart && isMobile && !modalExpire}>
+        <ModalStart onClose={handleScreenFull} />
+        <TestIphone
+          showTest={showModalStart}
           numbersBySquare={numbersBySquare}
           handle={handle}
           handleTap={handleTap}
@@ -159,7 +149,45 @@ const Test = () => {
           heightSquare={heightSquare}
           options={options}
         />
-      )}
+      </When>
+      <When condition={!isMobile && !modalExpire}>
+        <ModalIncompatible />
+      </When>
+      <When condition={showModalTestOk && isMobile && !modalExpire}>
+        <ModalTestOk />
+        <TestOk
+          showTest={showModalTestOk}
+          numbersBySquare={numbersBySquare}
+          handle={handle}
+          handleTap={handleTap}
+          numberSquareInWidth={numberSquareInWidth}
+          heightSquare={heightSquare}
+          options={options}
+        />
+      </When>
+      <Unless condition={showModalTestOk && isMobile && !modalExpire}>
+        {isIphone ? (
+          <TestIphone
+            showTest={showTest}
+            numbersBySquare={numbersBySquare}
+            handle={handle}
+            handleTap={handleTap}
+            numberSquareInWidth={numberSquareInWidth}
+            heightSquare={heightSquare}
+            options={options}
+          />
+        ) : (
+          <TestAndroid
+            showTest={showTest}
+            numbersBySquare={numbersBySquare}
+            handle={handle}
+            handleTap={handleTap}
+            numberSquareInWidth={numberSquareInWidth}
+            heightSquare={heightSquare}
+            options={options}
+          />
+        )}
+      </Unless>
     </div>
   );
 };
