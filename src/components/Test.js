@@ -2,12 +2,15 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useFullScreenHandle } from "react-full-screen";
+import { useParams } from "react-router-dom";
+import Countdown from "react-countdown";
 
 import { useMobile } from "../hooks/useMobile";
 import TestIphone from "./TestIphone";
 import TestAndroid from "./TestAndroid";
 import { useSquares } from "../provider/squareProvider";
 import { useModal } from "../provider/modalProvider";
+import ModalExpireTime from "./ModalTimeExpire";
 
 const Test = () => {
   const handle = useFullScreenHandle();
@@ -18,15 +21,16 @@ const Test = () => {
   const [showTest, setShowTest] = useState(false);
   const { isIphone } = useMobile();
   const {
-    squareHeight: numberSquareInHeigth,
-    squareWidth: numberSquareInWidth,
+    /* squareHeight: numberSquareInHeigth,
+    squareWidth: numberSquareInWidth, */
     setSquareHeight,
     setSquareWidth,
   } = useSquares();
   const { openModal } = useModal();
+  const { timestap } = useParams();
   let selectSquares = [];
-  /* const numberSquareInHeigth = 6;
-  const numberSquareInWidth = 4; */
+  const numberSquareInHeigth = 6;
+  const numberSquareInWidth = 4;
   useEffect(() => {
     if (isIphone) {
       setHeightDevide(
@@ -107,16 +111,34 @@ const Test = () => {
 
   return (
     <div className='flex justify-center items-center flex-col'>
-      <p className='text-center my-5'>
-        Realiza la prueba del touch, para saber la condicion de la pantalla del
-        dispositivo
-      </p>
-      <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        onClick={handleScreenFull}
-      >
-        Realizar prueba de touch
-      </button>
+      <div className='h-screen w-full justify-center flex items-center flex-col pb-20'>
+        <p className='text-center my-1 font-semibold'>
+          A continuacion, se realizara una prueba de la pantalla con el fin de
+          continuar con el proceso de adquisicion de poliza.
+        </p>
+        <p className='text-center my-1 font-semibold'>
+          Esta prueba se basa en seleccionar lo cuadros generados para validar
+          el touch de la pantalla.
+        </p>
+        <a
+          href='https://files-statics-protegeme.s3.amazonaws.com/Politica+deprotecciondedatos-min.pdf'
+          className='underline underline-offset-4 text-blue-800 my-3 font-semibold '
+        >
+          Terminos y Condiciones
+        </a>
+        <button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          onClick={handleScreenFull}
+        >
+          Comenzar prueba
+        </button>
+      </div>
+      <Countdown
+        date={timestap}
+        intervalDelay={0}
+        precision={3}
+        renderer={(props) => props.completed === true && <ModalExpireTime />}
+      />
       {isIphone ? (
         <TestIphone
           showTest={showTest}
