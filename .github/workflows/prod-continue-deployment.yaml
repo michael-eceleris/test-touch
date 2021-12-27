@@ -1,0 +1,65 @@
+name: Deploy de Produccion microservice-web
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Actualiza Fuente Remota
+        uses: actions/checkout@v2
+
+      - name: Update Remote Project Repo
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_PASS }}
+          script: |
+            cd ${{secrets.PROD_DIR}}
+            echo "Ejecutando 'git pull'"
+            /usr/bin/git pull
+
+      - name: Ejecutando 'yarn install'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_PASS }}
+          script: |
+            cd ${{secrets.PROD_DIR}}
+            echo "Ejecutando 'yarn install'"
+            /usr/bin/yarn install
+                        
+      - name: Eliminando Archivos .env.*
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_PASS }}
+          script: |
+            cd ${{secrets.PROD_DIR}}
+            rm -rf .env.*
+            
+      - name: Ejecutando 'yarn build'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_PASS }}
+          script: |
+            cd ${{secrets.PROD_DIR}}
+            echo "Ejecutando 'yarn build'"
+            /usr/bin/yarn build
+            
+      - name: Reiniciando Nginx
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_PASS }}
+          script: |
+            cd ${{secrets.PROD_DIR}}
+            echo "Reiniciando Nginx"
+            /usr/sbin/service nginx reload
