@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useFullScreenHandle } from "react-full-screen";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Countdown from "react-countdown";
 import { When } from "react-if";
 import { Unless } from "react-if";
@@ -17,7 +17,7 @@ import ModalStart from "./ModalStart";
 import ModalTestOk from "./ModalTestOk";
 import TestOk from "./TestOk";
 import ModalIncompatible from "./ModalIncompatible";
-
+import { usePostSendCode } from "../services/sendCode/useSendCode";
 const Test = () => {
   const handle = useFullScreenHandle();
   const [widthDevice, setWidthDevice] = useState(0);
@@ -33,11 +33,15 @@ const Test = () => {
     setSquareHeight,
     setSquareWidth,
   } = useSquares();
-  const { openModal, showModalStart, showModalTestOk } = useModal();
-  const { timestap } = useParams();
+  const { openModalTestOk, showModalStart, showModalTestOk } = useModal();
+  const { mutateAsync: postCode } = usePostSendCode();
   let selectSquares = [];
+  const { search } = useLocation();
   /* const numberSquareInHeigth = 6;
   const numberSquareInWidth = 4; */
+  const query = new URLSearchParams(search);
+  const paramToken = query.get("touchId");
+  const paramTimeStap = query.get("expiredAt");
   useEffect(() => {
     if (isIphone) {
       setHeightDevide(
@@ -107,7 +111,17 @@ const Test = () => {
       return 0;
     });
     if (JSON.stringify(numbersBySquare) === JSON.stringify(result)) {
-      openModal();
+      openModalTestOk();
+      postCode({
+        test: true,
+        token: paramToken,
+      })
+        .then((res) => {
+          console.log("res", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
     }
   };
 
@@ -119,15 +133,15 @@ const Test = () => {
   return (
     <div className='flex justify-center items-center flex-col h-screen'>
       <Countdown
-        date={timestap}
+        date={paramTimeStap}
         intervalDelay={0}
         precision={3}
         renderer={(props) => {
           setModalExpire(props.completed);
+          return <ModalExpireTime />;
         }}
       />
       <When condition={modalExpire}>
-        <ModalExpireTime />
         <TestIphone
           showTest={modalExpire}
           numbersBySquare={numbersBySquare}
