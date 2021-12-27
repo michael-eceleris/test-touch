@@ -1,5 +1,5 @@
 import React from "react";
-import { IoMdAlert } from "react-icons/all";
+import { VscError } from "react-icons/all";
 
 const ModalExpireTime = () => {
   return (
@@ -28,8 +28,8 @@ const ModalExpireTime = () => {
           <div className='bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
             <div className='sm:flex sm:items-start'>
               <div className='mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 '>
-                <IoMdAlert
-                  size={"22px"}
+                <VscError
+                  size={"30px"}
                   style={{
                     color: "rgba(239, 68, 68, 1)",
                     borderColor: "rgba(239, 68, 68, 1)",

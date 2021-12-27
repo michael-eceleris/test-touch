@@ -33,7 +33,14 @@ const Test = () => {
     setSquareHeight,
     setSquareWidth,
   } = useSquares();
-  const { openModalTestOk, showModalStart, showModalTestOk } = useModal();
+  const {
+    openModalTestOk,
+    showModalStart,
+    showModalTestOk,
+    setIsLoading,
+    setIsSuccess,
+    setIsError,
+  } = useModal();
   const { mutateAsync: postCode } = usePostSendCode();
   let selectSquares = [];
   const { search } = useLocation();
@@ -96,7 +103,7 @@ const Test = () => {
     let percentageY = Math.floor(y / (heightDevice / numberSquareInHeigth));
     i = percentageX + numberSquareInWidth * percentageY;
     document.getElementById(`square_${numbersBySquare[i]}`).style.background =
-      "blue";
+      "rgb(34 197 94)";
     selectSquares.push(numbersBySquare[i]);
     let result = selectSquares.filter((item, index) => {
       return selectSquares.indexOf(item) === index;
@@ -112,15 +119,22 @@ const Test = () => {
     });
     if (JSON.stringify(numbersBySquare) === JSON.stringify(result)) {
       openModalTestOk();
+      setIsLoading(true);
       postCode({
-        test: true,
-        token: paramToken,
+        touchId: paramToken,
       })
         .then((res) => {
-          console.log("res", res);
+          if (res.status === 200) {
+            setIsSuccess(true);
+          } else {
+            setIsError(true);
+          }
         })
-        .catch((err) => {
-          console.log("err", err);
+        .catch(() => {
+          setIsError(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -138,10 +152,11 @@ const Test = () => {
         precision={3}
         renderer={(props) => {
           setModalExpire(props.completed);
-          return <ModalExpireTime />;
+          return <></>;
         }}
       />
       <When condition={modalExpire}>
+        <ModalExpireTime />
         <TestIphone
           showTest={modalExpire}
           numbersBySquare={numbersBySquare}

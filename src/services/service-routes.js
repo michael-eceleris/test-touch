@@ -1,5 +1,5 @@
 export const serviceRoutes = {
   code: {
-    send: () => `/api/send/code`,
+    send: () => `/api/v1/touch`,
   },
 };

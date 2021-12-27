@@ -9,6 +9,9 @@ export const ModalProvider = ({ children }) => {
   const [showModalStart, setShowModalStart] = useState(true);
   const [showModalTestOk, setShowModalTestOk] = useState(false);
   const [showModalIncompatible, setShowModalIncompatible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
   const closeModal = () => {
     setShowModal(false);
   };
@@ -56,6 +59,12 @@ export const ModalProvider = ({ children }) => {
         showModalIncompatible,
         openModalIncompatible,
         closeModalIncompatible,
+        isLoading,
+        setIsLoading,
+        isSuccess,
+        setIsSuccess,
+        isError,
+        setIsError,
       }}
       children={children}
     />
