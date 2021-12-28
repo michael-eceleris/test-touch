@@ -18,6 +18,8 @@ import ModalTestOk from "./ModalTestOk";
 import TestOk from "./TestOk";
 import ModalIncompatible from "./ModalIncompatible";
 import { usePostSendCode } from "../services/sendCode/useSendCode";
+import CircularCountDown from "./CircularProgress";
+
 const Test = () => {
   const handle = useFullScreenHandle();
   const [widthDevice, setWidthDevice] = useState(0);
@@ -26,6 +28,7 @@ const Test = () => {
   const [numbersBySquare, setNumbersBySquare] = useState(null);
   const [modalExpire, setModalExpire] = useState(false);
   const [showTest, setShowTest] = useState(false);
+  const [totalTime, setTotalTime] = useState(null);
   const { isIphone, isMobile } = useMobile();
   const {
     squareHeight: numberSquareInHeigth,
@@ -149,10 +152,21 @@ const Test = () => {
       <Countdown
         date={paramTimeStap}
         intervalDelay={0}
-        precision={3}
+        precision={0}
         renderer={(props) => {
+          if (totalTime === null) {
+            setTotalTime(props.total);
+          }
           setModalExpire(props.completed);
-          return <></>;
+          return (
+            <CircularCountDown
+              completed={props.completed || showModalTestOk}
+              total={props.total}
+              minutes={showModalTestOk ? 0 : props.minutes}
+              seconds={showModalTestOk ? 0 : props.seconds}
+              totalTime={totalTime}
+            />
+          );
         }}
       />
       <When condition={modalExpire}>
@@ -204,6 +218,11 @@ const Test = () => {
             numberSquareInWidth={numberSquareInWidth}
             heightSquare={heightSquare}
             options={options}
+            paramTimeStap={paramTimeStap}
+            setModalExpire={setModalExpire}
+            modalExpire={modalExpire}
+            totalTime={totalTime}
+            setTotalTime={setTotalTime}
           />
         ) : (
           <TestAndroid
@@ -214,6 +233,11 @@ const Test = () => {
             numberSquareInWidth={numberSquareInWidth}
             heightSquare={heightSquare}
             options={options}
+            paramTimeStap={paramTimeStap}
+            setModalExpire={setModalExpire}
+            modalExpire={modalExpire}
+            totalTime={totalTime}
+            setTotalTime={setTotalTime}
           />
         )}
       </Unless>

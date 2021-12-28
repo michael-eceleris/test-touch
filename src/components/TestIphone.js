@@ -1,6 +1,11 @@
 import React from "react";
 import Hammer from "react-hammerjs";
 import { Fragment } from "react";
+import Countdown from "react-countdown";
+import { When } from "react-if";
+
+import CircularCountDown from "./CircularProgress";
+import ModalExpireTime from "./ModalTimeExpire";
 
 const TestIphone = ({
   numbersBySquare,
@@ -9,6 +14,11 @@ const TestIphone = ({
   heightSquare,
   handleTap,
   numberSquareInWidth,
+  paramTimeStap,
+  setModalExpire,
+  modalExpire,
+  totalTime,
+  setTotalTime,
 }) => {
   return (
     <Fragment>
@@ -18,6 +28,29 @@ const TestIphone = ({
         }  w-screen h-screen top-0 right-0 `}
       >
         <div className={`flex flex-wrap ${showTest ? "" : "hidden"} `}>
+          <When condition={modalExpire}>
+            <ModalExpireTime />
+          </When>
+          <Countdown
+            date={paramTimeStap}
+            intervalDelay={0}
+            precision={3}
+            renderer={(props) => {
+              if (totalTime === null) {
+                setTotalTime(props.total);
+              }
+              setModalExpire(props.completed);
+              return (
+                <CircularCountDown
+                  completed={props.completed}
+                  total={props.total}
+                  minutes={props.minutes}
+                  seconds={props.seconds}
+                  totalTime={totalTime}
+                />
+              );
+            }}
+          />
           {numbersBySquare &&
             numbersBySquare.map((d, index) => (
               <Hammer
