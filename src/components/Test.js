@@ -127,7 +127,7 @@ const Test = () => {
         touchId: paramToken,
       })
         .then((res) => {
-          if (res.status === 200) {
+          if (res.data && res.data.status === 200) {
             setIsSuccess(true);
           } else {
             setIsError(true);
