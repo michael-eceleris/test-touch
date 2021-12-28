@@ -1,0 +1,89 @@
+name: Stage Continue Deployment
+on:
+  push:
+    branches:
+      - stage
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v1
+
+      - name: Remote - Test Connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ACINCO_STAGE_SSH_HOST }}
+          username: ${{ secrets.ACINCO_STAGE_SSH_USER }}
+          key: ${{ secrets.ACINCO_STAGE_SSH_KEY }}
+          script: |
+            ls
+
+      - name: Install Node.js v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install Packages
+        run: yarn install
+
+      - name: Set Environment
+        run: |
+          mv .env.stage .env
+          rm -rf .env.*
+
+      - name: Build
+        run: yarn build
+
+      - name: Remote - Clean Files
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ACINCO_STAGE_SSH_HOST }}
+          username: ${{ secrets.ACINCO_STAGE_SSH_USER }}
+          key: ${{ secrets.ACINCO_STAGE_SSH_KEY }}
+          script: |
+            mkdir -p /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web
+            mkdir -p /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web/build
+            rm -rf /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web/*
+
+      - name: Remote - Copy Build Files
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr
+          path: build/
+          remote_path: /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web/build/
+          remote_host: ${{ secrets.ACINCO_STAGE_SSH_HOST }}
+          remote_user: ${{ secrets.ACINCO_STAGE_SSH_USER }}
+          remote_key: ${{ secrets.ACINCO_STAGE_SSH_KEY }}
+
+      - name: Remote - Copy Deployment Files
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr
+          path: deployment/
+          remote_path: /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web/
+          remote_host: ${{ secrets.ACINCO_STAGE_SSH_HOST }}
+          remote_user: ${{ secrets.ACINCO_STAGE_SSH_USER }}
+          remote_key: ${{ secrets.ACINCO_STAGE_SSH_KEY }}
+
+      - name: Remote - Build Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ACINCO_STAGE_SSH_HOST }}
+          username: ${{ secrets.ACINCO_STAGE_SSH_USER }}
+          key: ${{ secrets.ACINCO_STAGE_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web/
+            docker build -t eceleris/microservice-web .
+
+      - name: Remote - Deploy Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ACINCO_STAGE_SSH_HOST }}
+          username: ${{ secrets.ACINCO_STAGE_SSH_USER }}
+          key: ${{ secrets.ACINCO_STAGE_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.ACINCO_STAGE_SSH_USER }}/microservice-web/
+            docker stop microservice-web
+            docker rm microservice-web
+            docker run -d --name=microservice-web -p 11000:80 eceleris/microservice-web
