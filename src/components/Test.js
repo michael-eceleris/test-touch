@@ -6,10 +6,13 @@ import { useLocation } from "react-router-dom";
 import Countdown from "react-countdown";
 import { When } from "react-if";
 import { Unless } from "react-if";
+import { Switch } from "react-if";
+import { Case } from "react-if";
 
 import { useMobile } from "../hooks/useMobile";
 import TestIphone from "./TestIphone";
 import TestAndroid from "./TestAndroid";
+import TestAndroidBack from "./TestAndroidBack";
 import { useSquares } from "../provider/squareProvider";
 import { useModal } from "../provider/modalProvider";
 import ModalExpireTime from "./ModalTimeExpire";
@@ -64,8 +67,14 @@ const Test = () => {
         )
       );
     } else {
-      setSquareHeight(Math.trunc(window.screen.availHeight / 40));
-      setHeightDevide(window.screen.availHeight);
+      setSquareHeight(
+        Math.trunc(
+          (window.screen.availHeight - window.screen.availHeight * 0.02) / 40
+        )
+      );
+      setHeightDevide(
+        window.screen.availHeight - window.screen.availHeight * 0.02
+      );
     }
     setWidthDevice(window.screen.availWidth);
     setSquareWidth(Math.trunc(window.screen.availWidth / 40));
@@ -73,6 +82,10 @@ const Test = () => {
     setNumbersArray();
     //eslint-disable-next-line
   }, [widthDevice, heightDevice]);
+
+  useEffect(() => {
+    console.log("handel", handle);
+  }, [handle, showTest]);
 
   const measureSquare = () => {
     setHeightSquare(heightDevice / numberSquareInHeigth);
@@ -218,37 +231,56 @@ const Test = () => {
         />
       </When>
       <Unless condition={showModalTestOk && isMobile && !modalExpire}>
-        {isIphone ? (
-          <TestIphone
-            showTest={showTest}
-            numbersBySquare={numbersBySquare}
-            handle={handle}
-            handleTap={handleTap}
-            numberSquareInWidth={numberSquareInWidth}
-            heightSquare={heightSquare}
-            options={options}
-            paramTimeStap={paramTimeStap}
-            setModalExpire={setModalExpire}
-            modalExpire={modalExpire}
-            totalTime={totalTime}
-            setTotalTime={setTotalTime}
-          />
-        ) : (
-          <TestAndroid
-            showTest={showTest}
-            numbersBySquare={numbersBySquare}
-            handle={handle}
-            handleTap={handleTap}
-            numberSquareInWidth={numberSquareInWidth}
-            heightSquare={heightSquare}
-            options={options}
-            paramTimeStap={paramTimeStap}
-            setModalExpire={setModalExpire}
-            modalExpire={modalExpire}
-            totalTime={totalTime}
-            setTotalTime={setTotalTime}
-          />
-        )}
+        <Switch>
+          <Case condition={isIphone}>
+            <TestIphone
+              showTest={showTest}
+              numbersBySquare={numbersBySquare}
+              handle={handle}
+              handleTap={handleTap}
+              numberSquareInWidth={numberSquareInWidth}
+              heightSquare={heightSquare}
+              options={options}
+              paramTimeStap={paramTimeStap}
+              setModalExpire={setModalExpire}
+              modalExpire={modalExpire}
+              totalTime={totalTime}
+              setTotalTime={setTotalTime}
+            />
+          </Case>
+          <Case condition={showTest === true && handle.active === false}>
+            <TestAndroidBack
+              showTest={showTest}
+              numbersBySquare={numbersBySquare}
+              handle={handle}
+              handleTap={handleTap}
+              numberSquareInWidth={numberSquareInWidth}
+              heightSquare={heightSquare}
+              options={options}
+              paramTimeStap={paramTimeStap}
+              setModalExpire={setModalExpire}
+              modalExpire={modalExpire}
+              totalTime={totalTime}
+              setTotalTime={setTotalTime}
+            />
+          </Case>
+          <Case condition={!isIphone}>
+            <TestAndroid
+              showTest={showTest}
+              numbersBySquare={numbersBySquare}
+              handle={handle}
+              handleTap={handleTap}
+              numberSquareInWidth={numberSquareInWidth}
+              heightSquare={heightSquare}
+              options={options}
+              paramTimeStap={paramTimeStap}
+              setModalExpire={setModalExpire}
+              modalExpire={modalExpire}
+              totalTime={totalTime}
+              setTotalTime={setTotalTime}
+            />
+          </Case>
+        </Switch>
       </Unless>
     </div>
   );
