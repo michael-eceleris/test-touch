@@ -50,8 +50,8 @@ const ModalStart = ({ onClose }) => {
               <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
                 <div className='mt-8'>
                   <p className='text-center my-4 font-semibold text-gray-500'>
-                    A continuacion, se realizara una prueba de la pantalla con
-                    el fin de continuar con el proceso de adquirir una poliza.
+                    A continuación, se realizará una prueba de la pantalla con
+                    el fin de continuar con el proceso de adquirir una póliza.
                   </p>
                   <p className='text-sm text-gray-500 py-3'>
                     Esta prueba se basa en seleccionar lo cuadros generados para
@@ -61,7 +61,7 @@ const ModalStart = ({ onClose }) => {
                     href='https://files-statics-protegeme.s3.amazonaws.com/Politica+deprotecciondedatos-min.pdf'
                     className='underline text-sm underline-offset-4 text-blue-800 mt-10 font-semibold '
                   >
-                    Terminos y Condiciones
+                    Términos y Condiciones
                   </a>
                 </div>
               </div>

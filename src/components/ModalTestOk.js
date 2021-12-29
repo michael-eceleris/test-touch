@@ -60,12 +60,12 @@ const ModalExpireTime = () => {
                       className='text-lg leading-6 font-medium text-gray-900'
                       id='modal-title'
                     >
-                      Prueba realizada con exito
+                      Prueba realizada con éxito
                     </h3>
                     <div className='mt-2'>
                       <p className='text-sm text-gray-500 '>
-                        Felicidades, pasaste la prueba, continua con tu proceso
-                        de compra de la poliza.
+                        Felicidades, pasaste la prueba, continúa con tu proceso
+                        de compra de la póliza.
                       </p>
                     </div>
                   </div>
@@ -86,12 +86,12 @@ const ModalExpireTime = () => {
                       className='text-lg leading-6 font-medium text-gray-900'
                       id='modal-title'
                     >
-                      Lo sentimos, ocurrio un error
+                      Lo sentimos, ocurrió un error
                     </h3>
                     <div className='mt-2'>
                       <p className='text-sm text-gray-500'>
                         No se pudo validar la pantalla, por favor comunicate con
-                        atencion al cliente para ayudarte.
+                        atención al cliente para ayudarte.
                       </p>
                     </div>
                   </div>
