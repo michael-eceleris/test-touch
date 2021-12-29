@@ -42,12 +42,12 @@ const ModalExpireTime = () => {
                   className='text-lg leading-6 font-medium text-gray-900'
                   id='modal-title'
                 >
-                  El tiempo expiro
+                  El tiempo expiró
                 </h3>
                 <div className='mt-2'>
                   <p className='text-sm text-gray-500'>
-                    Lo sentimos, el tiempo para realizar la prueba termino, por
-                    favor comunicate con atencion al cliente para ayudarte.
+                    Lo sentimos, el tiempo para realizar la prueba terminó, por
+                    favor comunícate con atención al cliente para ayudarte.
                   </p>
                 </div>
               </div>
