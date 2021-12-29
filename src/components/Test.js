@@ -59,21 +59,21 @@ const Test = () => {
   useEffect(() => {
     if (isIphone) {
       setHeightDevide(
-        window.screen.availHeight - window.screen.availHeight * 0.1727
+        window.screen.availHeight - window.screen.availHeight * 0.1827
       );
       setSquareHeight(
         Math.trunc(
-          (window.screen.availHeight - window.screen.availHeight * 0.1727) / 40
+          (window.screen.availHeight - window.screen.availHeight * 0.1827) / 40
         )
       );
     } else {
       setSquareHeight(
         Math.trunc(
-          (window.screen.availHeight - window.screen.availHeight * 0.02) / 40
+          (window.screen.availHeight - window.screen.availHeight * 0.03) / 40
         )
       );
       setHeightDevide(
-        window.screen.availHeight - window.screen.availHeight * 0.02
+        window.screen.availHeight - window.screen.availHeight * 0.03
       );
     }
     setWidthDevice(window.screen.availWidth);
@@ -82,10 +82,6 @@ const Test = () => {
     setNumbersArray();
     //eslint-disable-next-line
   }, [widthDevice, heightDevice]);
-
-  useEffect(() => {
-    console.log("handel", handle);
-  }, [handle, showTest]);
 
   const measureSquare = () => {
     setHeightSquare(heightDevice / numberSquareInHeigth);
@@ -248,7 +244,11 @@ const Test = () => {
               setTotalTime={setTotalTime}
             />
           </Case>
-          <Case condition={showTest === true && handle.active === false}>
+          <Case
+            condition={
+              !isIphone && showTest === true && handle.active === false
+            }
+          >
             <TestAndroidBack
               showTest={showTest}
               numbersBySquare={numbersBySquare}
