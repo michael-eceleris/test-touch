@@ -7,7 +7,7 @@ import { useModal } from "../provider/modalProvider";
 import Loader from "./Loader";
 
 const ModalExpireTime = () => {
-  const { isLoading, isSuccess, isError } = useModal();
+  const { isLoading, isSuccess, isError, isErrorTouch } = useModal();
   return (
     <div
       className='fixed z-50 overflow-y-auto'
@@ -92,6 +92,32 @@ const ModalExpireTime = () => {
                       <p className='text-sm text-gray-500'>
                         No se pudo validar la pantalla, por favor comunicate con
                         atencion al cliente para ayudarte.
+                      </p>
+                    </div>
+                  </div>
+                </Case>
+                <Case condition={isErrorTouch}>
+                  <div className='mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 '>
+                    <VscError
+                      size={"30px"}
+                      style={{
+                        color: "rgba(239, 68, 68, 1)",
+                        borderColor: "rgba(239, 68, 68, 1)",
+                        stroke: "rgba(239, 68, 68, 1)",
+                      }}
+                    />
+                  </div>
+                  <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
+                    <h3
+                      className='text-lg leading-6 font-medium text-gray-900'
+                      id='modal-title'
+                    >
+                      No fue posible validar la pantalla
+                    </h3>
+                    <div className='mt-2'>
+                      <p className='text-sm text-gray-500'>
+                        Debido a que esta prueba ya ha sido validada, por favor
+                        comunicate con atencion al cliente para ayudarte.
                       </p>
                     </div>
                   </div>

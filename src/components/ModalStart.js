@@ -40,12 +40,12 @@ const ModalStart = ({ onClose }) => {
                   width={"45px"}
                   alt='eceleris_icon'
                 />
-                <h3
-                  className='text-lg leading-6 font-medium text-gray-900 ml-2'
+                <p
+                  className='text-lg text-gray-900 ml-2 font-semibold'
                   id='modal-title'
                 >
                   Prueba de touch
-                </h3>
+                </p>
               </div>
               <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
                 <div className='mt-8'>

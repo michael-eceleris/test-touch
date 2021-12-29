@@ -12,6 +12,7 @@ export const ModalProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isErrorTouch, setIsErrorTouch] = useState(false);
   const closeModal = () => {
     setShowModal(false);
   };
@@ -65,6 +66,8 @@ export const ModalProvider = ({ children }) => {
         setIsSuccess,
         isError,
         setIsError,
+        isErrorTouch,
+        setIsErrorTouch,
       }}
       children={children}
     />

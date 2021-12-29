@@ -43,6 +43,7 @@ const Test = () => {
     setIsLoading,
     setIsSuccess,
     setIsError,
+    setIsErrorTouch,
   } = useModal();
   const { mutateAsync: postCode } = usePostSendCode();
   let selectSquares = [];
@@ -127,14 +128,22 @@ const Test = () => {
         touchId: paramToken,
       })
         .then((res) => {
+          console.log("res", res);
           if (res.data && res.data.status === 200) {
             setIsSuccess(true);
           } else {
             setIsError(true);
           }
         })
-        .catch(() => {
-          setIsError(true);
+        .catch((err) => {
+          if (
+            err.response.data.error.code === 400 &&
+            err.response.data.error.message === "expired touchId"
+          ) {
+            setIsErrorTouch(true);
+          } else {
+            setIsError(true);
+          }
         })
         .finally(() => {
           setIsLoading(false);
