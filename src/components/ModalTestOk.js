@@ -6,7 +6,7 @@ import { VscError } from "react-icons/all";
 import { useModal } from "../provider/modalProvider";
 import Loader from "./Loader";
 
-const ModalExpireTime = () => {
+const ModalTestOk = () => {
   const { isLoading, isSuccess, isError, isErrorTouch } = useModal();
   return (
     <div
@@ -131,4 +131,4 @@ const ModalExpireTime = () => {
   );
 };
 
-export default ModalExpireTime;
+export default ModalTestOk;

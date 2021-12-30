@@ -200,7 +200,7 @@ const Test = () => {
   };
 
   return (
-    <div className='flex justify-center items-center flex-col h-screen'>
+    <div className='flex justify-center items-center flex-col h-screen w-screen'>
       <Countdown
         date={paramTimeStap}
         intervalDelay={0}
@@ -276,6 +276,7 @@ const Test = () => {
               modalExpire={modalExpire}
               totalTime={totalTime}
               setTotalTime={setTotalTime}
+              showModalTestOk={showModalTestOk}
             />
           </Case>
           {/* <Case
