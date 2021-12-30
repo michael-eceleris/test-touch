@@ -32,9 +32,9 @@ const TestOk = ({
                   data-index={d}
                   className='mx-auto bg-green-500  border-indigo-50'
                   style={{
-                    width: `calc( ${100 / numberSquareInWidth}% - 1px)`,
+                    width: `calc(${numberSquareInWidth}px - 1px)`,
                     borderWidth: "0.5px",
-                    height: heightSquare,
+                    height: `${heightSquare}px`,
                   }}
                 ></div>
               </Hammer>

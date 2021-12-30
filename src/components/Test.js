@@ -58,38 +58,62 @@ const Test = () => {
   const paramTimeStap = query.get("expiredAt");
   useEffect(() => {
     if (isIphone) {
+      for (let i = 1; i < 20; i++) {
+        if (
+          (window.screen.availHeight - window.screen.availHeight * 0.1727) /
+            i <=
+          40
+        ) {
+          setSquareHeight(
+            (window.screen.availHeight - window.screen.availHeight * 0.1727) / i
+          );
+          break;
+        } else {
+          continue;
+        }
+      }
       setHeightDevide(
-        window.screen.availHeight - window.screen.availHeight * 0.1827
-      );
-      setSquareHeight(
-        Math.trunc(
-          (window.screen.availHeight - window.screen.availHeight * 0.1827) / 40
-        )
+        window.screen.availHeight - window.screen.availHeight * 0.1727
       );
     } else {
-      setSquareHeight(
-        Math.trunc(
-          (window.screen.availHeight - window.screen.availHeight * 0.03) / 40
-        )
-      );
-      setHeightDevide(
-        window.screen.availHeight - window.screen.availHeight * 0.03
-      );
+      for (let i = 1; i < 20; i++) {
+        if (window.screen.availHeight / i <= 40) {
+          setSquareHeight(window.screen.availHeight / i);
+          break;
+        } else {
+          continue;
+        }
+      }
+      setHeightDevide(window.screen.availHeight);
+    }
+    for (let i = 1; i < 20; i++) {
+      if (window.screen.availWidth / i <= 40) {
+        setSquareWidth(window.screen.availWidth / i);
+        break;
+      } else {
+        continue;
+      }
     }
     setWidthDevice(window.screen.availWidth);
-    setSquareWidth(Math.trunc(window.screen.availWidth / 40));
+    /* setSquareWidth(Math.trunc(window.screen.availWidth / 40)); */
     measureSquare();
     setNumbersArray();
     //eslint-disable-next-line
   }, [widthDevice, heightDevice]);
 
   const measureSquare = () => {
-    setHeightSquare(heightDevice / numberSquareInHeigth);
+    setHeightSquare(numberSquareInHeigth);
   };
 
   const setNumbersArray = () => {
     let data = [];
-    for (let i = 1; i <= numberSquareInHeigth * numberSquareInWidth; i++) {
+    for (
+      let i = 1;
+      i <=
+      (heightDevice / numberSquareInHeigth) *
+        (widthDevice / numberSquareInWidth);
+      i++
+    ) {
       data.push(i);
     }
     if (data.length > 0) {
@@ -112,9 +136,13 @@ const Test = () => {
     let i = 0;
     let x = e.changedPointers[0].pageX;
     let y = e.changedPointers[0].pageY;
-    let percentageX = Math.floor(x / (widthDevice / numberSquareInWidth));
-    let percentageY = Math.floor(y / (heightDevice / numberSquareInHeigth));
-    i = percentageX + numberSquareInWidth * percentageY;
+    let percentageX = Math.floor(
+      x / (widthDevice / (widthDevice / numberSquareInWidth))
+    );
+    let percentageY = Math.floor(
+      y / (heightDevice / (heightDevice / numberSquareInHeigth))
+    );
+    i = percentageX + (widthDevice / numberSquareInWidth) * percentageY;
     document.getElementById(`square_${numbersBySquare[i]}`).style.background =
       "rgb(34 197 94)";
     selectSquares.push(numbersBySquare[i]);
@@ -137,7 +165,6 @@ const Test = () => {
         touchId: paramToken,
       })
         .then((res) => {
-          console.log("res", res);
           if (res.data && res.data.status === 200) {
             setIsSuccess(true);
           } else {
