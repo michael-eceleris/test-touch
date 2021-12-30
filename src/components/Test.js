@@ -168,6 +168,7 @@ const Test = () => {
     if (JSON.stringify(numbersBySquare) === JSON.stringify(result)) {
       openModalTestOk();
       setIsLoading(true);
+      setShowTest((ev) => !ev);
       postCode({
         touchId: paramToken,
       })
