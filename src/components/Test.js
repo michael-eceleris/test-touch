@@ -77,14 +77,21 @@ const Test = () => {
       );
     } else {
       for (let i = 1; i < 20; i++) {
-        if (window.screen.availHeight / i <= 40) {
-          setSquareHeight(window.screen.availHeight / i);
+        if (
+          (window.screen.availHeight - window.screen.availHeight * 0.04) / i <=
+          40
+        ) {
+          setSquareHeight(
+            (window.screen.availHeight - window.screen.availHeight * 0.04) / i
+          );
           break;
         } else {
           continue;
         }
       }
-      setHeightDevide(window.screen.availHeight);
+      setHeightDevide(
+        window.screen.availHeight - window.screen.availHeight * 0.04
+      );
     }
     for (let i = 1; i < 20; i++) {
       if (window.screen.availWidth / i <= 40) {
