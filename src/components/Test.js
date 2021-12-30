@@ -200,7 +200,7 @@ const Test = () => {
   };
 
   return (
-    <div className='flex justify-center items-center flex-col h-screen w-screen'>
+    <div className='flex justify-center items-center h-screen w-screen'>
       <Countdown
         date={paramTimeStap}
         intervalDelay={0}
