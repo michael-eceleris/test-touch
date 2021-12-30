@@ -12,7 +12,7 @@ import { Case } from "react-if";
 import { useMobile } from "../hooks/useMobile";
 import TestIphone from "./TestIphone";
 import TestAndroid from "./TestAndroid";
-import TestAndroidBack from "./TestAndroidBack";
+/* import TestAndroidBack from "./TestAndroidBack"; */
 import { useSquares } from "../provider/squareProvider";
 import { useModal } from "../provider/modalProvider";
 import ModalExpireTime from "./ModalTimeExpire";
@@ -58,11 +58,11 @@ const Test = () => {
   const paramTimeStap = query.get("expiredAt");
   useEffect(() => {
     if (isIphone) {
-      for (let i = 1; i < 20; i++) {
+      for (let i = 1; i < 50; i++) {
         if (
           (window.screen.availHeight - window.screen.availHeight * 0.1727) /
             i <=
-          40
+          30
         ) {
           setSquareHeight(
             (window.screen.availHeight - window.screen.availHeight * 0.1727) / i
@@ -76,10 +76,10 @@ const Test = () => {
         window.screen.availHeight - window.screen.availHeight * 0.1727
       );
     } else {
-      for (let i = 1; i < 20; i++) {
+      for (let i = 1; i < 50; i++) {
         if (
           (window.screen.availHeight - window.screen.availHeight * 0.04) / i <=
-          40
+          30
         ) {
           setSquareHeight(
             (window.screen.availHeight - window.screen.availHeight * 0.04) / i
@@ -278,7 +278,7 @@ const Test = () => {
               setTotalTime={setTotalTime}
             />
           </Case>
-          <Case
+          {/* <Case
             condition={
               !isIphone && showTest === true && handle.active === false
             }
@@ -297,7 +297,7 @@ const Test = () => {
               totalTime={totalTime}
               setTotalTime={setTotalTime}
             />
-          </Case>
+          </Case> */}
           <Case condition={!isIphone}>
             <TestAndroid
               showTest={showTest}
