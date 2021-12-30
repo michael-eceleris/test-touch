@@ -58,11 +58,11 @@ const Test = () => {
   const paramTimeStap = query.get("expiredAt");
   useEffect(() => {
     if (isIphone) {
-      for (let i = 1; i < 50; i++) {
+      for (let i = 1; i < 120; i++) {
         if (
           (window.screen.availHeight - window.screen.availHeight * 0.1727) /
             i <=
-          30
+          50
         ) {
           setSquareHeight(
             (window.screen.availHeight - window.screen.availHeight * 0.1727) / i
@@ -76,10 +76,10 @@ const Test = () => {
         window.screen.availHeight - window.screen.availHeight * 0.1727
       );
     } else {
-      for (let i = 1; i < 50; i++) {
+      for (let i = 1; i < 120; i++) {
         if (
           (window.screen.availHeight - window.screen.availHeight * 0.04) / i <=
-          30
+          50
         ) {
           setSquareHeight(
             (window.screen.availHeight - window.screen.availHeight * 0.04) / i
@@ -93,8 +93,8 @@ const Test = () => {
         window.screen.availHeight - window.screen.availHeight * 0.04
       );
     }
-    for (let i = 1; i < 20; i++) {
-      if (window.screen.availWidth / i <= 40) {
+    for (let i = 1; i < 120; i++) {
+      if (window.screen.availWidth / i <= 30) {
         setSquareWidth(window.screen.availWidth / i);
         break;
       } else {
