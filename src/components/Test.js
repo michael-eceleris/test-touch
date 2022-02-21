@@ -18,9 +18,12 @@ import { useModal } from "../provider/modalProvider";
 import ModalExpireTime from "./ModalTimeExpire";
 import ModalStart from "./ModalStart";
 import ModalTestOk from "./ModalTestOk";
+import ModalExpireLink from "./ModalLinkExpire";
 import TestOk from "./TestOk";
 import ModalIncompatible from "./ModalIncompatible";
+import SkeletonCard from "./Skeleton";
 import { usePostSendCode } from "../services/sendCode/useSendCode";
+import { useValidCode } from "../services/sendCode/useSendCode";
 import CircularCountDown from "./CircularProgress";
 
 const Test = () => {
@@ -32,6 +35,7 @@ const Test = () => {
   const [modalExpire, setModalExpire] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [totalTime, setTotalTime] = useState(null);
+  const [isValidLink, setIsValidLink] = useState(null);
   const { isIphone, isMobile } = useMobile();
   const {
     squareHeight: numberSquareInHeigth,
@@ -49,6 +53,7 @@ const Test = () => {
     setIsErrorTouch,
   } = useModal();
   const { mutateAsync: postCode } = usePostSendCode();
+  const { mutateAsync: validCode, isLoading } = useValidCode();
   let selectSquares = [];
   const { search } = useLocation();
   /* const numberSquareInHeigth = 6;
@@ -107,6 +112,17 @@ const Test = () => {
     setNumbersArray();
     //eslint-disable-next-line
   }, [widthDevice, heightDevice]);
+
+  useEffect(() => {
+    validCode({
+      touchId: paramToken,
+    })
+      .then(() => {
+        setIsValidLink(true);
+      })
+      .catch((err) => setIsValidLink(false));
+    //eslint-disable-next-line
+  }, []);
 
   const measureSquare = () => {
     setHeightSquare(numberSquareInHeigth);
@@ -222,7 +238,31 @@ const Test = () => {
           );
         }}
       />
-      <When condition={modalExpire}>
+      <When condition={isLoading}>
+        <SkeletonCard withClass='w-64' />
+        <TestIphone
+          showTest={true}
+          numbersBySquare={numbersBySquare}
+          handle={handle}
+          handleTap={handleTap}
+          numberSquareInWidth={numberSquareInWidth}
+          heightSquare={heightSquare}
+          options={options}
+        />
+      </When>
+      <When condition={!isValidLink && !isLoading}>
+        <ModalExpireLink />
+        <TestIphone
+          showTest={true}
+          numbersBySquare={numbersBySquare}
+          handle={handle}
+          handleTap={handleTap}
+          numberSquareInWidth={numberSquareInWidth}
+          heightSquare={heightSquare}
+          options={options}
+        />
+      </When>
+      <When condition={modalExpire && isValidLink && !isLoading}>
         <ModalExpireTime />
         <TestIphone
           showTest={modalExpire}
@@ -234,7 +274,15 @@ const Test = () => {
           options={options}
         />
       </When>
-      <When condition={showModalStart && isMobile && !modalExpire}>
+      <When
+        condition={
+          showModalStart &&
+          isMobile &&
+          !modalExpire &&
+          isValidLink &&
+          !isLoading
+        }
+      >
         <ModalStart onClose={handleScreenFull} />
         <TestIphone
           showTest={showModalStart}
@@ -249,7 +297,15 @@ const Test = () => {
       <When condition={!isMobile && !modalExpire}>
         <ModalIncompatible />
       </When>
-      <When condition={showModalTestOk && isMobile && !modalExpire}>
+      <When
+        condition={
+          showModalTestOk &&
+          isMobile &&
+          !modalExpire &&
+          isValidLink &&
+          !isLoading
+        }
+      >
         <ModalTestOk />
         <TestOk
           showTest={showModalTestOk}
@@ -261,7 +317,15 @@ const Test = () => {
           options={options}
         />
       </When>
-      <Unless condition={showModalTestOk && isMobile && !modalExpire}>
+      <Unless
+        condition={
+          showModalTestOk &&
+          isMobile &&
+          !modalExpire &&
+          isValidLink &&
+          !isLoading
+        }
+      >
         <Switch>
           <Case condition={isIphone}>
             <TestIphone
@@ -280,26 +344,6 @@ const Test = () => {
               showModalTestOk={showModalTestOk}
             />
           </Case>
-          {/* <Case
-            condition={
-              !isIphone && showTest === true && handle.active === false
-            }
-          >
-            <TestAndroidBack
-              showTest={showTest}
-              numbersBySquare={numbersBySquare}
-              handle={handle}
-              handleTap={handleTap}
-              numberSquareInWidth={numberSquareInWidth}
-              heightSquare={heightSquare}
-              options={options}
-              paramTimeStap={paramTimeStap}
-              setModalExpire={setModalExpire}
-              modalExpire={modalExpire}
-              totalTime={totalTime}
-              setTotalTime={setTotalTime}
-            />
-          </Case> */}
           <Case condition={!isIphone}>
             <TestAndroid
               showTest={showTest}
